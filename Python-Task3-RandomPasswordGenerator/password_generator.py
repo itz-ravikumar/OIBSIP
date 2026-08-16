@@ -4,21 +4,28 @@ import random
 def get_password_length():
     while True:
         try:
-            length = int(input("Enter desired password length (minimum 8): "))
-            if length >= 8:
+            length = int(input("Enter desired password length (8-128): "))
+            if 8 <= length <= 128:
                 return length
             else:
-                print("Length must be at least 8. Please try again.")
+                print("Length must be between 8 and 128. Please try again.")
         except ValueError:
             print("Invalid input. Please enter a valid number.")
+
+def ask_yes_no(question):
+    while True:
+        answer = input(question).strip().lower()
+        if answer in ("y", "n"):
+            return answer == "y"
+        print("Invalid input! Please enter only 'y' or 'n'.")
 
 def get_character_types():
     while True:
         print("\nSelect character types to include (at least 2):")
-        inc_upper = input("Include uppercase letters? (y/n): ").strip().lower() == 'y'
-        inc_lower = input("Include lowercase letters? (y/n): ").strip().lower() == 'y'
-        inc_numbers = input("Include numbers? (y/n): ").strip().lower() == 'y'
-        inc_symbols = input("Include symbols? (y/n): ").strip().lower() == 'y'
+        inc_upper = ask_yes_no("Include uppercase letters? (y/n): ")
+        inc_lower = ask_yes_no("Include lowercase letters? (y/n): ")
+        inc_numbers = ask_yes_no("Include numbers? (y/n): ")
+        inc_symbols = ask_yes_no("Include symbols? (y/n): ")
 
         selected_count = sum([inc_upper, inc_lower, inc_numbers, inc_symbols])
         if selected_count >= 2:
