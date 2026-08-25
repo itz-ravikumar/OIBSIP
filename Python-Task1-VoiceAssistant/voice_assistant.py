@@ -6,28 +6,9 @@ import os
 import psutil
 import pyautogui
 import keyboard
+# pyrefly: ignore [missing-import]
 import wikipedia
-import smtplib
-from email.message import EmailMessage
-import threading
-import winsound
-import requests
-import json
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-import string
 from AppOpener import open as appopen
-
-# Make sure nltk data is available
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt', quiet=True)
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords', quiet=True)
 
 # Initialize the text-to-speech engine
 engine = pyttsx3.init()
@@ -38,13 +19,13 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 
-def listen(timeout=5, phrase_time_limit=10):
+def listen():
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         print("\nListening...")
         recognizer.adjust_for_ambient_noise(source, duration=1)
         try:
-            audio = recognizer.listen(source, timeout=timeout, phrase_time_limit=phrase_time_limit)
+            audio = recognizer.listen(source, timeout=5, phrase_time_limit=10)
             print("Recognizing...")
             command = recognizer.recognize_google(audio).lower()
             print(f"You said: {command}")
@@ -58,130 +39,14 @@ def listen(timeout=5, phrase_time_limit=10):
         except sr.WaitTimeoutError:
             return None
 
-def trigger_reminder(message):
-    print(f"\n[REMINDER ALERT] {message}")
-    winsound.Beep(1000, 1000) # Beep for 1 second
-
-def parse_intent(text):
-    """Basic NLU Intent Parsing using NLTK."""
-    tokens = word_tokenize(text)
-    stop_words = set(stopwords.words('english'))
-    filtered_tokens = [w for w in tokens if not w in stop_words and w not in string.punctuation]
-    
-    if "email" in filtered_tokens or ("send" in filtered_tokens and "mail" in filtered_tokens): return "email"
-    if "weather" in filtered_tokens or "temperature" in filtered_tokens: return "weather"
-    if "remind" in filtered_tokens or "reminder" in filtered_tokens: return "reminder"
-    
-    return None
-
-def load_custom_commands():
-    try:
-        if os.path.exists("commands.json"):
-            with open("commands.json", "r") as f:
-                return json.load(f)
-    except Exception as e:
-        print(f"Error loading commands.json: {e}")
-    return {}
-
 def main():
     speak("Hello! I am your advanced voice assistant. How can I help you today?")
-    custom_commands = load_custom_commands()
-
+    
     while True:
         command = listen()
         if not command:
             continue
             
-        # Check Custom Commands First
-        matched_custom = False
-        for trigger, response in custom_commands.items():
-            if trigger in command:
-                speak(response)
-                matched_custom = True
-                break
-        if matched_custom:
-            continue
-
-        # NLU Intent Parsing for Advanced Features
-        intent = parse_intent(command)
-        
-        if intent == "email":
-            speak("Who is the recipient?")
-            recipient = listen(phrase_time_limit=5)
-            if not recipient: continue
-            
-            speak("What is the subject?")
-            subject = listen(phrase_time_limit=5)
-            if not subject: continue
-            
-            speak("What is the message?")
-            body = listen(phrase_time_limit=15)
-            if not body: continue
-            
-            # Dummy credentials
-            EMAIL_ADDRESS = os.environ.get("EMAIL_USER", "dummy_test_assistant_123@gmail.com")
-            EMAIL_PASSWORD = os.environ.get("EMAIL_PASS", "dummy_app_password")
-            
-            if EMAIL_PASSWORD == "dummy_app_password":
-                speak("I need a real email and app password set in the environment variables to actually send it, but I've drafted it successfully.")
-                print(f"Draft:\nTo: {recipient}\nSubject: {subject}\nBody: {body}")
-            else:
-                try:
-                    msg = EmailMessage()
-                    msg['Subject'] = subject
-                    msg['From'] = EMAIL_ADDRESS
-                    msg['To'] = recipient
-                    msg.set_content(body)
-                    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-                        smtp.send_message(msg)
-                    speak("Email sent successfully.")
-                except Exception as e:
-                    speak("Failed to send email.")
-                    print(e)
-            continue
-            
-        elif intent == "weather":
-            # Very basic extraction for demo purposes
-            city = "London"
-            words = command.split()
-            if "in" in words:
-                idx = words.index("in")
-                if idx + 1 < len(words):
-                    city = words[idx + 1]
-            speak(f"Fetching weather for {city}...")
-            try:
-                # wttr.in gives plain text weather format 3 gives location and temp
-                res = requests.get(f"https://wttr.in/{city}?format=3", timeout=5)
-                if res.status_code == 200:
-                    speak(res.text.strip())
-                else:
-                    speak("I couldn't fetch the weather right now.")
-            except:
-                speak("I couldn't fetch the weather right now.")
-            continue
-            
-        elif intent == "reminder":
-            speak("What should I remind you about?")
-            message = listen()
-            if not message: continue
-            
-            speak("In how many seconds should I remind you? Please say a number.")
-            duration_str = listen(phrase_time_limit=5)
-            if not duration_str: continue
-            
-            try:
-                # Basic extraction of number from voice
-                numbers = [int(s) for s in duration_str.split() if s.isdigit()]
-                duration = numbers[0] if numbers else 10 # default 10s
-                
-                t = threading.Timer(duration, trigger_reminder, args=[message])
-                t.start()
-                speak(f"Reminder set for {duration} seconds.")
-            except Exception as e:
-                speak("Sorry, I didn't understand the duration. Reminder not set.")
-            continue
-
         # Basic Interactions
         if "hello" in command or "hi" in command:
             speak("Hello there! How can I assist you today?")
@@ -266,7 +131,7 @@ def main():
             
         elif "restart the computer" in command:
             speak("Are you sure you want to restart? Say yes to confirm.")
-            confirmation = listen(phrase_time_limit=5)
+            confirmation = listen()
             if confirmation and "yes" in confirmation:
                 speak("Restarting the computer.")
                 os.system("shutdown /r /t 5")
@@ -275,7 +140,7 @@ def main():
                 
         elif "shut down the computer" in command or "shutdown" in command:
             speak("Are you sure you want to shut down? Say yes to confirm.")
-            confirmation = listen(phrase_time_limit=5)
+            confirmation = listen()
             if confirmation and "yes" in confirmation:
                 speak("Shutting down the computer.")
                 os.system("shutdown /s /t 5")
