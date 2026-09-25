@@ -1,159 +1,102 @@
-# Oasis Infobyte Python Programming Internship
+# Oasis Infobyte Python Programming Internship (OIBSIP)
 
-## About the Internship
+> A monorepo containing three practical Python applications developed during the Oasis Infobyte Python Programming Internship. The projects demonstrate proficiency in system automation, secure data generation, and multithreaded network programming.
 
-This repository contains my project work completed during the **Oasis Infobyte Python Programming Internship**.
+## 📖 Overview
 
-The internship is a **1-month learning and hands-on application program** focused on developing practical programming skills through project-based tasks. My assigned track is **Python Programming**.
+This repository holds my submissions for the Oasis Infobyte Python Programming track. Rather than just meeting the basic requirements, each task has been implemented with robustness, error handling, and a clear architectural separation in mind.
 
-## Internship Tasks
+### 🎯 Implemented Tasks
 
-As required for the Python Programming track, I am completing at least **3 of the 5 available Python tasks**.
-
-### Selected Projects
-
-| Task   | Project                   | Technologies                                             |
-| ------ | ------------------------- | -------------------------------------------------------- |
-| Task 1 | Voice Assistant           | Python, SpeechRecognition, pyttsx3, datetime, webbrowser |
-| Task 3 | Random Password Generator | Python, string, random/secrets                           |
-| Task 5 | Chat Application          | Python, socket, threading                                |
-
-## Repository Structure
-
-```text
-OIBSIP/
-│
-├── Python-Task1-VoiceAssistant/
-│   ├── main.py
-│   ├── requirements.txt
-│   ├── README.md
-│   └── screenshots/
-│
-├── Python-Task3-RandomPasswordGenerator/
-│   ├── password_generator.py
-│   ├── README.md
-│   └── screenshots/
-│
-└── Python-Task5-ChatApplication/
-    ├── server.py
-    ├── client.py
-    ├── README.md
-    └── screenshots/
-```
-
-## Learning Objectives
-
-Through these projects, I am developing practical skills in:
-
-* Python programming fundamentals
-* Functions and modular programming
-* Input validation and error handling
-* Working with Python libraries
-* Speech recognition and text-to-speech
-* Random and secure password generation
-* Socket programming
-* Client-server architecture
-* Multithreading
-* Git and GitHub
-* Project documentation and testing
-
-## Task Overview
-
-### 1. Voice Assistant
-
-A Python-based voice assistant that:
-
-* Captures voice input through a microphone
-* Responds to a greeting
-* Provides the current time and date
-* Performs web searches
-* Handles speech recognition errors gracefully
-* Provides responses using text-to-speech
-
-### 2. Random Password Generator
-
-A Python utility that:
-
-* Accepts a user-defined password length
-* Enforces a minimum password length of 8 characters
-* Allows selection of uppercase letters, lowercase letters, numbers, and symbols
-* Validates user input
-* Generates passwords according to the selected criteria
-* Allows generation of additional passwords without restarting
-
-### 3. Chat Application
-
-A Python client-server chat application that:
-
-* Uses sockets for network communication
-* Uses a server to manage client connections
-* Supports real-time two-way messaging
-* Uses threading for simultaneous communication
-* Displays message timestamps
-* Handles client disconnection gracefully
-* Runs locally using `localhost`
-
-These feature requirements are based on the official Oasis Infobyte Python Programming task list.
-
-## GitHub Workflow
-
-Each project follows this workflow:
-
-```text
-Plan
-  ↓
-Develop
-  ↓
-Test
-  ↓
-Document
-  ↓
-Git Commit
-  ↓
-Git Push
-  ↓
-Demo Video
-  ↓
-LinkedIn Post
-  ↓
-Task Submission
-```
-
-The internship instructions require all task submissions to be maintained in the single `OIBSIP` repository, with appropriate source code, README files, and relevant screenshots/output files.
-
-## Internship Deliverables
-
-For each completed task, the internship guidelines require:
-
-* Completed project
-* Source code
-* `README.md`
-* Relevant screenshots/output
-* GitHub repository submission
-* Demo video for practical Python tasks
-* LinkedIn post containing the demo
-* Substantive peer evaluation of at least two other interns' videos
-
-The demo video must begin with a 2-second title card containing the intern's full name, assigned track, and task title.
-
-## Purpose
-
-The goal of this internship is to strengthen practical Python development skills through hands-on implementation, testing, documentation, version control, and project presentation.
-
-## Organization
-
-**Oasis Infobyte**
-
-**Internship Track:** Python Programming
-**Internship Duration:** 1 Month
+| Task | Project Name | Core Technologies | Focus Area |
+| :--- | :--- | :--- | :--- |
+| **Task 1** | [Voice Assistant](./Python-Task1-VoiceAssistant) | `speech_recognition`, `pyttsx3`, `os`, `AppOpener` | Speech Processing & OS Automation |
+| **Task 3** | [Random Password Generator](./Python-Task3-RandomPasswordGenerator) | `random`, `string` | CLI Interfaces & Data Generation |
+| **Task 5** | [Chat Application](./Python-Task5-ChatApplication) | `socket`, `threading` | Network I/O & Concurrency |
 
 ---
 
-## Note
+## 🏗 Project Details
 
-This repository is maintained as part of the Oasis Infobyte internship project submission and contains educational implementations developed during the internship.
+### 1. Voice Assistant (`Task 1`)
+A desktop-based voice automation tool tailored for Windows systems. 
+- **How it works:** Captures microphone input, transcribed via Google's Web Speech API, and processes intents locally using substring matching. Auditory feedback is generated entirely offline via `pyttsx3`.
+- **Key Features:** Natively launches installed applications (via `AppOpener`), executes OS-level power commands (Sleep, Lock, Restart with voice confirmation), fetches Wikipedia summaries, and takes system screenshots natively to the user's Desktop.
 
-## References
+### 2. Random Password Generator (`Task 3`)
+A robust command-line utility for generating complex passwords based on strict user constraints.
+- **How it works:** Enforces a minimum length (8-128 characters) and requires the user to select at least two character classes (Uppercase, Lowercase, Numbers, Symbols).
+- **Key Features:** Guarantees inclusion of at least one character from every selected class before randomly filling the remaining length, followed by a cryptographic-style shuffle to prevent predictable patterns. 
 
-* Oasis Infobyte. (2026). *OASIS INFOBYTE — SIP Task List*.
-* Oasis Infobyte. (2026). *Internship Offer Letter — Python Programming*.
+### 3. Localhost Chat Application (`Task 5`)
+A real-time, terminal-based chat platform demonstrating client-server architecture.
+- **How it works:** Operates over IPv4 TCP sockets bound to `127.0.0.1:65432`. The server dispatches incoming connections to dedicated daemon threads to handle concurrent I/O.
+- **Key Features:** Real-time broadcasting, connection/disconnection event tracking, injected timestamps, and gracefully handling unexpected client socket termination.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Python 3.x** installed.
+- **Windows OS** (Recommended specifically for Task 1's system control commands).
+
+### Installation & Execution
+
+Clone the repository to your local machine:
+```bash
+git clone https://github.com/yourusername/OIBSIP.git
+cd OIBSIP
+```
+
+**To run the Voice Assistant:**
+```bash
+cd Python-Task1-VoiceAssistant
+pip install SpeechRecognition pyttsx3 psutil pyautogui keyboard wikipedia AppOpener
+python voice_assistant.py
+```
+*(Ensure a working microphone is connected).*
+
+**To run the Password Generator:**
+```bash
+cd Python-Task3-RandomPasswordGenerator
+python password_generator.py
+```
+
+**To run the Chat Application:**
+Requires two separate terminal windows.
+1. *Terminal 1 (Server):*
+   ```bash
+   cd Python-Task5-ChatApplication
+   python server.py
+   ```
+2. *Terminal 2 (Client):*
+   ```bash
+   cd Python-Task5-ChatApplication
+   python client.py
+   ```
+
+---
+
+## 📂 Repository Structure
+
+```text
+OIBSIP/
+├── Python-Task1-VoiceAssistant/
+│   ├── commands.json           # [TODO] Unimplemented custom commands config
+│   ├── voice_assistant.py      # Main voice assistant logic
+│   └── test_assistant.py       # Automated testing mock script
+├── Python-Task3-RandomPasswordGenerator/
+│   └── password_generator.py   # CLI password generator
+└── Python-Task5-ChatApplication/
+    ├── server.py               # TCP chat server
+    └── client.py               # TCP chat client
+```
+*(Note: Documentation files like `README.md` and media demonstrations `.mp4` are also contained within their respective subdirectories).*
+
+---
+
+## ⚠️ Limitations & Technical Decisions
+- **Voice Assistant:** Natural Language Understanding is purely based on string presence (`if "keyword" in command`), rather than intent classification like NLTK/spaCy.
+- **Password Generator:** Utilizes the standard `random` module instead of `secrets`. While functionally correct and highly randomized, it is not considered cryptographically secure for highly sensitive production environments.
+- **Chat Application:** Currently hardcoded to run on localhost (`127.0.0.1`). To expose to a LAN, the `HOST` variable in `server.py` and `client.py` must be updated to the machine's local IP address.
