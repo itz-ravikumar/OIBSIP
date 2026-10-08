@@ -1,26 +1,57 @@
-# Python-Task1-VoiceAssistant
+# 🎙️ Intelligent Voice Assistant
 
-This is a fully featured voice assistant built in Python for the OIBSIP Internship Task 1.
+> A voice-controlled assistant built in Python that allows users to perform computer operations through spoken commands.
 
-## Features (Beginner & Advanced Tiers)
-- **Natural Language Understanding (NLU):** Uses NLTK to parse your intent dynamically.
-- **Universal App Opening:** Uses `AppOpener` to open any installed application.
-- **System Controls:** Lock, Sleep, Restart, Shutdown (with voice confirmation).
-- **System Utilities:** Take screenshots, check battery status, control volume.
-- **Web & Knowledge Search:** Google searches, Wikipedia queries.
-- **Live Weather:** Fetches live weather using `wttr.in`.
-- **Email Sending:** Voice-driven email drafting (requires configuration of SMTP).
-- **Timed Reminders:** Background reminder alerts.
-- **Custom Commands:** Easily add custom voice commands via `commands.json`.
+## 📖 Overview
 
-## Privacy Considerations
-- **Voice Data:** This application captures your microphone audio using the `speech_recognition` library and sends it to the **Google Web Speech API** to convert it into text. Keep in mind that audio snippets are transmitted over the internet to Google's servers.
-- **Local Execution:** All other features (AppOpener, system controls, NLU intent parsing, custom commands) are processed locally on your machine.
-- **Credentials:** Email sending requires an email address and an App Password. Never commit your passwords directly into the script. They should be set as Environment Variables (`EMAIL_USER` and `EMAIL_PASS`).
+**Problem:** Performing common computer operations manually can be inconvenient and time-consuming, especially when hands-free interaction is preferred.
 
-## How to use
-Ensure all dependencies are installed via `pip`.
+**Utility:** A fully functional, locally-hosted voice assistant that allows users to perform computer operations through spoken commands without breaking workflow.
+
+## ✨ Key Utilities
+
+- 🔍 **Search Google and Wikipedia**
+- 🌐 **Open applications and websites**
+- 🕒 **Check time, date, and battery status**
+- 🔊 **Control system volume**
+- 📸 **Take screenshots**
+- 🔌 **Lock, sleep, restart, and shut down the computer**
+
+## ⚙️ How We Did It
+
+Converted spoken input into text, processed the command using Python, executed the corresponding system/web operation, and returned the result through voice output.
+
+**Workflow:**
+`Voice Input` → `Speech Recognition` → `Command Processing` → `Action` → `Voice Response`
+
+## 🛠️ Technologies
+
+- **Python**
+- **SpeechRecognition**
+- **pyttsx3**
+- **AppOpener**
+- **Wikipedia**
+- **psutil**
+- **PyAutoGUI**
+- **Keyboard**
+
+## 🔬 Engineering Highlight
+
+**Automated Testing:** Implemented automated testing by replacing microphone input with predefined commands in `test_assistant.py` to seamlessly verify the assistant's functionality without requiring manual voice prompts.
+
+## 🚀 Quick Start
+
+Ensure all dependencies are installed via `pip`:
+```bash
+pip install SpeechRecognition pyttsx3 wikipedia psutil pyautogui keyboard AppOpener pyaudio
+```
+
 Run the assistant:
 ```bash
 python voice_assistant.py
+```
+
+Run the automated tests:
+```bash
+python test_assistant.py
 ```

@@ -1,44 +1,85 @@
-# Real-Time Chat Application
+# 💬 Real-Time Multi-Room Chat Application (Task 5)
 
-This is a real-time, bidirectional command-line chat application built in Python using sockets and multithreading. It acts as a local chat room where multiple users can connect, chat, and see timestamps on messages.
+This project provides a real-time, bi-directional multi-room chat application. It is implemented using two completely distinct architectures:
+1. **Modern Web Application** (Flask, Flask-SocketIO, HTML/CSS/JS)
+2. **Desktop Application** (Raw TCP Sockets, Tkinter GUI)
 
-This project was developed as **Task 5** for the OIBSIP Internship (Beginner Tier).
+This project was developed as **Task 5** for the OIBSIP Internship.
 
-## Features
+## ✨ Key Features
 
-- **Multithreaded Server:** Handles multiple client connections concurrently without blocking.
-- **Real-Time Bidirectional Chat:** Clients can send and receive messages at the same time.
+### Web Application (`web_app.py`)
+- **Responsive Web UI:** Built with HTML5, vanilla CSS3 (Glassmorphism & Dark Mode), and JavaScript.
+- **Real-Time WebSockets:** Uses `Flask-SocketIO` to enable sub-second message broadcasting.
+- **Multi-Room Isolation:** Connect to distinct rooms via SocketIO namespaces; messages are isolated by room.
+- **LAN Connectivity:** Binds to `0.0.0.0:5000`, allowing any device on the local network (Wi-Fi) to connect via the host machine's IP address.
+- **Live Notifications:** Broadcasts system messages when users join or leave a room.
+
+### Desktop GUI Application (`server.py` & `client.py`)
+- **Raw TCP Sockets:** Custom multithreaded server handling multiple concurrent client connections.
+- **Tkinter Interface:** A native desktop GUI for logging in (IP, Name, Room) and chatting.
+- **Multi-Room Support:** The TCP server dynamically groups clients into rooms, ensuring messages are only broadcast to users in the same room.
 - **Timestamps:** Every message displays exactly when it was sent (e.g., `[14:35] Alice: Hello`).
-- **Join/Leave Notifications:** The server alerts everyone in the room when a user connects or disconnects gracefully.
-- **Custom Usernames:** Pick your name upon connecting.
 
-## Tech Stack
+## 🛠️ Technology Stack
 
-- **Python 3**
-- `socket` (for network connections)
-- `threading` (to handle simultaneous sending/receiving)
-- `datetime` (for formatting message timestamps)
+- **Backend / Server:** Python 3.x, Flask, Flask-SocketIO, `socket`, `threading`
+- **Frontend (Web):** HTML5, CSS3, Vanilla JavaScript (Socket.IO client)
+- **Frontend (Desktop):** Tkinter
 
-## How to Run
+## 📂 Project Structure
 
-Because this is a server-client architecture, you need to run the server first, and then connect your clients.
-
-### 1. Start the Server
-Open a terminal, navigate to this folder, and run:
-```bash
-python server.py
+```text
+Python-Task5-ChatApplication/
+├── web_app.py              # Flask + SocketIO Web Server
+├── server.py               # Raw TCP Socket Server
+├── client.py               # Tkinter TCP Desktop Client
+├── static/                 
+│   ├── script.js           # WebSocket client logic for the Web App
+│   └── style.css           # Styling for the Web App
+└── templates/              
+    └── index.html          # HTML entrypoint for the Web App
 ```
-*The server will start listening on `127.0.0.1:65432`.*
 
-### 2. Connect the Clients
-Open a **new** terminal window for each user that wants to join the chat and run:
+## 🚀 Installation and Setup
+
+### Prerequisites
+- **Python 3.8+** installed on your local machine.
+
+### Install Dependencies
+Navigate to the project directory and install the required packages (only needed for the Web App):
 ```bash
-python client.py
+pip install flask flask-socketio
 ```
-You will be prompted to enter your name. After that, you're in the chat room! 
+*(Note: The TCP Desktop Application uses built-in Python libraries and requires no external dependencies).*
 
-*Note: You must have the server running in the background for the clients to successfully connect.*
+## 🏃 Running the Application Locally
 
-### Commands
-- Type your message and hit `Enter` to broadcast it to the room.
-- Type `/quit` to safely disconnect and exit the application.
+You can choose to run either the Web Application or the Desktop GUI Application.
+
+### Option 1: Run the Web Application (Recommended)
+
+1. Start the Flask-SocketIO server:
+   ```bash
+   python web_app.py
+   ```
+2. Open a web browser and navigate to `http://localhost:5000`.
+3. Enter your Name and Room, and click "Join Chat".
+4. To chat with others on your local network, find your machine's IPv4 address (e.g. `192.168.1.15`) and have them navigate to `http://192.168.1.15:5000`.
+
+### Option 2: Run the Desktop GUI Application (TCP Sockets)
+
+1. Start the raw TCP server:
+   ```bash
+   python server.py
+   ```
+   *(The server will listen on `0.0.0.0:65432`)*
+2. Start one or more clients:
+   ```bash
+   python client.py
+   ```
+3. In the Tkinter GUI, enter the Server IP (use `127.0.0.1` if running locally), your Name, and your desired Room Name. Click "Connect".
+
+## 🚧 Known Limitations & Roadmap
+- **Persistence:** Chat messages are currently ephemeral and retained only in memory or the browser DOM. Connecting a lightweight SQLite database to persist room histories is a potential future enhancement.
+- **Security:** The raw TCP server does not currently implement SSL/TLS encryption.

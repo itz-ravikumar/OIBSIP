@@ -71,7 +71,7 @@ Thank you for using the Random Password Generator. Goodbye!
 
 - **Language**: Python
 - **Core Modules**:
-  - `random`: Used for cryptographically secure character selection and password shuffling.
+  - `random`: Used for character selection and password shuffling. (Note: Not cryptographically secure; for cryptographic purposes, use `secrets`).
   - `string`: Provides standard constants for ASCII letters, digits, and punctuation.
 
 ## 📂 Project Structure
